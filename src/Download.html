@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>addEventListener</title>
+</head>
+<body>
+    <style>
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body{
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: #222f56;
+}
+.download-btn{
+  outline: none;
+  border: none;
+  color: #000;
+  display: flex;
+  cursor: pointer;
+  padding: 16px 25px;
+  border-radius: 6px;
+  align-items: center;
+  white-space: nowrap;
+  background:yellow;
+  transition: all 0.2s ease;
+}
+.download-btn:hover{
+  background: #222f56;
+}
+.download-btn.timer{
+  color: #000;
+  background: none;
+  transition: none;
+  font-size: 1.6rem;
+  pointer-events: none;
+}
+.download-btn.timer b{
+  color: #fff;
+  padding: 0 8px;
+}
+.download-btn .icon{
+  font-size: 2rem;
+}
+.download-btn .text{
+  font-size: 1.5rem;
+  padding-left: 10px;
+}
+    </style>
+
+    <!--HTml-->
+    <button class="download-btn" data-timer="10">
+        <span class="icon material-symbols-rounded">vertical_align_bottom</span>
+        <span class="text">Download Files</span>
+      </button>
+
+      
+      <script>
+        const downloadBtn = document.querySelector(".download-btn");
+        const fileLink = "https://drive.google.com/uc?export=download&id=1aYiaLn3YOjL-_o5QBCy7tU1epqA6gZoi";
+        const initTimer = () => {
+            if(downloadBtn.classList.contains("disable-timer")) {
+                return location.href = fileLink;
+            }
+            let timer = downloadBtn.dataset.timer;
+            downloadBtn.classList.add("timer");
+            downloadBtn.innerHTML = `Your download will begin in <b>${timer}</b> seconds`;
+            const initCounter = setInterval(() => {
+                if(timer > 0) {
+                    timer--;
+                    return downloadBtn.innerHTML = `Your download will begin in <b>${timer}</b> seconds`;
+                }
+                clearInterval(initCounter);
+
+                location.href = fileLink;
+                downloadBtn.innerText = "Your file is downloading...";
+                setTimeout(() => {
+                    downloadBtn.classList.replace("timer", "disable-timer");
+                    downloadBtn.innerHTML = `<span class="icon material-symbols-rounded">vertical_align_bottom</span>
+                                            <span class="text">Download Again</span>`;
+                }, 3000);
+            }, 1000);
+        }
+        downloadBtn.addEventListener("click", initTimer);
+      </script>
+</body>
+</html>
